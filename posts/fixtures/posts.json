@@ -3,9 +3,9 @@
         "model": "posts.post",
         "pk": 1,
         "fields": {
-            "title": "testing it out",
+            "title": "How to tie your shoe",
             "image_url": "x.png",
-            "body": "yo yo yo",
+            "body": "first you..",
             "pub_date": "2023-11-20T00:06:48Z",
             "author": 1
         }
