@@ -1,0 +1,13 @@
+[
+    {
+        "model": "posts.post",
+        "pk": 1,
+        "fields": {
+            "title": "testing it out",
+            "image_url": "x.png",
+            "body": "yo yo yo",
+            "pub_date": "2023-11-20T00:06:48Z",
+            "author": 1
+        }
+    }
+]
