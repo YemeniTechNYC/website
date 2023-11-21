@@ -1,17 +1,16 @@
-from django.shortcuts import get_object_or_404, render
+from django.views import generic
 
 from .models import Post
 
 
-def recent_posts(request):
-    page = request.GET.get("page", 1)
-    LIMIT = 10
-    offset = (page - 1) * LIMIT
-    posts = Post.objects.order_by("-pub_date")[offset : offset + LIMIT]
-    context = {"latest_posts": posts}
-    return render(request, "posts/index.html", context)
+class IndexView(generic.ListView):
+    template_name = "posts/index.html"
+    context_object_name = "latest_posts"
+    model = Post
+    paginate_by = 2
+    ordering = ["-pub_date"]
 
 
-def post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    return render(request, "posts/detail.html", {"post": post})
+class DetailView(generic.DetailView):
+    model = Post
+    template_name = "posts/detail.html"

@@ -1,0 +1,20 @@
+[
+    {
+        "model": "user.user",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$600000$WZwPSt9CNUC54GRGQH1riI$o/n2sqE6qye/P5Dcrmk6R9eUPqOZxJlkSDVfXHau60w=",
+            "last_login": "2023-11-19T23:17:26.039Z",
+            "is_superuser": true,
+            "username": "admin",
+            "first_name": "",
+            "last_name": "",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2023-11-19T23:17:09.193Z",
+            "email": "admin@yitnyc.com",
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]
