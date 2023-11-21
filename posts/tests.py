@@ -12,3 +12,8 @@ class PostViewTests(TestCase):
         response = self.client.get(reverse("posts:index"))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "No posts are available")
+
+    def test_post(self):
+        response = self.client.get(reverse("posts:index"))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "How to tie your shoe")
