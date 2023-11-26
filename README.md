@@ -1,5 +1,4 @@
-# blog-api
-Demonstrates api of a service
+# Yemenis in Tech - NYC
 
 
 ## developing
