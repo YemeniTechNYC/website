@@ -20,4 +20,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        python manage.py test
+        ENV=local ALLOWED_HOSTS=localhost SECRET_KEY=abc python manage.py test
