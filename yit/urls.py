@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from yit.views import health
 
 urlpatterns = [
+    path("health", health),
     path("posts/", include("posts.urls")),
     path("admin/", admin.site.urls),
 ]
