@@ -1,4 +1,4 @@
-name: packer
+name: deploy
 
 on:
   push:
