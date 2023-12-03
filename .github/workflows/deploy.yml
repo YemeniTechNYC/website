@@ -1,0 +1,65 @@
+name: packer
+
+on:
+  push:
+    tags: [ 'v*.*.*' ]
+
+env:
+  ANSIBLE_SECRET_PATH: "./.vault-password-file"
+  ANSIBLE_PLAYBOOK: "playbooks/web.yaml"
+  ANSIBLE_INVENTORY_HOST_GROUP: "web"
+  SERVICE: "web"
+  SERVICE_VERSION: "${{  github.ref_name }}"
+  SOURCE_SNAPSHOT: "145421128"
+  DO_PAT: "${{ secrets.DO_PAT }}"
+
+jobs:
+  packer:
+    runs-on: ubuntu-latest
+    name: Run Packer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          repository: YemeniTechNYC/infra
+
+      - name: Setup `packer`
+        uses: hashicorp/setup-packer@main
+        id: setup-packer
+        with:
+          version: latest
+
+      - name: Run `packer init`
+        id: init-packer
+        run: packer init ./snapshots/template.json.pkr.hcl
+
+      - name: Add ansible secret pass file
+        id: ansible-secret
+        run: echo ${{ secrets.INFRA_ANSIBLE_SECRET_PASS }} > $ANSIBLE_SECRET_PATH
+
+      - name: Run `packer build`
+        id: build-packer
+        run: packer build snapshots/template.json.pkr.hcl
+
+      - name: Get new snapshot id
+        id: get_snapshot_id
+        uses: sergeysova/jq-action@v2
+        with:
+          cmd: jq .builds[0].artifact_id packer-manifest.json -r
+
+      - name: Setup `terraform`
+        uses: hashicorp/setup-terraform@v3
+        id: setup-terraform
+        with:
+          terraform_version: "1.6.2"
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Run `terraform init`
+        id: init-terraform
+        working-directory: ./machines
+        run: terraform init
+
+      - name: Run `terraform apply`
+        id: deploy
+        working-directory: ./machines
+        run: terraform apply -var do_token=$DO_PAT -var web_image_id=${{ steps.get_snapshot_id.outputs.value }}
